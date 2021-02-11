@@ -1,0 +1,18 @@
+{
+    "name": "NanobloxPlugin",
+    "tree": {
+      "$className": "DataModel",
+      "HttpService": {
+        "$className": "HttpService",
+        "$properties": {
+          "HttpEnabled": true
+        }
+      },
+      "ServerStorage": {
+        "$className": "ServerStorage",
+        "NanobloxPlugin": {
+          "$path": "src/Plugin"
+        }
+      }
+    }
+  }
