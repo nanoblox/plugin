@@ -1,9 +1,14 @@
+-- We don't want the plugin running in studio play-test
+local serverScriptService = game:GetService("ServerScriptService")
+local runService = game:GetService("RunService")
+local isEdit = runService:IsEdit()
+if not isEdit then return end
+
 -- This is a very simplified plugin to assist the team with developing the core and commands
 -- The actual Nanoblox plugin will be an interface (like that from ingame) that enables you to setup
 -- sections such as Roles in studio entirely through an easy-to-use interface
 local LOADER_NAME = "Nanoblox"
 local COMMANDS_MAINMODULE_ID = 6335531490
-local serverScriptService = game:GetService("ServerScriptService")
 local toolbar = plugin:CreateToolbar("Nanoblox")
 local pluginButton = toolbar:CreateButton("Nanoblox", "Click to install (this will be an actual interface later on not just a single button)", "rbxassetid://6379134806")
 local newCommandsContainer = require(COMMANDS_MAINMODULE_ID)
