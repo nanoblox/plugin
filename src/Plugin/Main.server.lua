@@ -23,7 +23,8 @@ local EXTENSIONS = {
 
 local toolbar = plugin:CreateToolbar("Nanoblox")
 local pluginButton = toolbar:CreateButton("Nanoblox", "Click to install (this will be an actual interface later on not just a single button)", "rbxassetid://6379134806")
-local newCommandsContainer = require(COMMANDS_MAINMODULE_ID)
+local newCommandsMainModule = require(COMMANDS_MAINMODULE_ID)
+local newCommandsContainer = newCommandsMainModule and newCommandsMainModule.Commands
 local newLoader = script.Parent
 
 local function findLoader()
