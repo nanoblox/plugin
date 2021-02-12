@@ -9,6 +9,18 @@ if not isEdit then return end
 -- sections such as Roles in studio entirely through an easy-to-use interface
 local LOADER_NAME = "Nanoblox"
 local COMMANDS_MAINMODULE_ID = 6335531490
+local EXTENSIONS = {
+    ["Commands"] = true,
+    ["Core"] = {
+        Client = true,
+        Server = true,
+        Shared = true,
+    },
+    ["Morphs"] = true,
+    ["Themes"] = true,
+    ["Tools"] = true,
+}
+
 local toolbar = plugin:CreateToolbar("Nanoblox")
 local pluginButton = toolbar:CreateButton("Nanoblox", "Click to install (this will be an actual interface later on not just a single button)", "rbxassetid://6379134806")
 local newCommandsContainer = require(COMMANDS_MAINMODULE_ID)
@@ -53,6 +65,17 @@ local function installLoader()
     clonedLoader.Name = LOADER_NAME
     clonedLoader.Parent = serverScriptService
     clonedLoader.Loader.Disabled = false
+    local function buildDirectory(container, table)
+        for name, value in pairs(table) do
+            local subContainer = Instance.new("Folder")
+            subContainer.Name = name
+            subContainer.Parent = container
+            if type(value) == "table" then
+                buildDirectory(subContainer, value)
+            end
+        end
+    end
+    buildDirectory(clonedLoader.Extensions, EXTENSIONS)
     return clonedLoader
 end
 
