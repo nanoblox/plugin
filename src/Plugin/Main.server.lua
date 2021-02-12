@@ -31,9 +31,10 @@ local function getOnlyNewCommandsArray()
     local prevLoader = findLoader()
     local existingCommands = {}
     local newCommandsArray = {}
-    local commandExtensions = prevLoader and prevLoader.Extensions.Commands
-    if commandExtensions then
-        for _, commandModule in pairs(commandExtensions:GetDescendants()) do
+    local extensionsContainer = prevLoader and prevLoader:FindFirstChild("Extensions")
+    local commandsExtensionContainer = extensionsContainer and extensionsContainer:FindFirstChild("Commands")
+    if commandsExtensionContainer then
+        for _, commandModule in pairs(commandsExtensionContainer:GetDescendants()) do
             if isACommandModule(commandModule) then
                 existingCommands[commandModule.Name] = true
             end
@@ -65,6 +66,8 @@ local function moveItems(sourceContainer, targetContainer)
             if sourceClass == targetClass and (sourceClass == "Folder" or sourceClass == "Configuration") then
                 moveItems(sourceChild, targetChild)
                 movedItems = true
+            else
+                targetChild:Destroy()
             end
         end
         if not movedItems then
@@ -80,8 +83,8 @@ pluginButton.Click:Connect(function()
     local newCommandsArray = getOnlyNewCommandsArray()
     local clonedLoader = prevLoader or installLoader()
     local extensions = clonedLoader:FindFirstChild("Extensions")
-    local commandExtensions = extensions:FindFirstChild("Commands")
-     if commandExtensions then
+    local commandExtensions = extensions and extensions:FindFirstChild("Commands")
+    if commandExtensions then
         local clonedCommandsContainer = newCommandsContainer:Clone()
         local totalNewCommands = #newCommandsArray
         local startMessage = (prevLoader and "Updating Nanoblox...") or "Installing Nanoblox..."
@@ -95,6 +98,10 @@ pluginButton.Click:Connect(function()
         end
         local endMessage = (prevLoader and "Successfully updated Nanoblox!") or "Successfully installed Nanoblox into ServerScriptService!"
         print(endMessage)
+    elseif not extensions then
+        print("Missing Nanoblox Extensions container")
+    else
+        print("Missing Nanoblox Commands extension container")
     end
     pluginButton:SetActive(false)
 end)
