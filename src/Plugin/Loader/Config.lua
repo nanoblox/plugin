@@ -4,6 +4,7 @@ Information here
 
 --]]
 
+local main = require(game.Nanoblox)
 return {
 
 	
@@ -143,35 +144,41 @@ return {
 	
 	Settings = {
 		---------------------------
-		["Client"] = {
+		["User"] = {
 			prefixes = {","},
 			argCapsule = "(%s)",
-			rgbCapsule = "[%s]",
 			collective = ",",
 			descriptorSeparator = "",
 			spaceSeparator = " ",
-			batchSeparator = " ", -- " | "
-			--
+			batchSeparator = " ",
+			playerIdentifier = "@",
+
 			previewIncompleteCommands = false,
-			--
+			
 			theme = "",
 			backgroundTransparency 	= 0.1,
-			noticeSoundId = 2865227271,	-- The SoundId for notices.
-			noticeVolume = 0.1,			-- The Volume for notices.
-			noticePitch = 1,			-- The Pitch/PlaybackSpeed for notices.
-			errorSoundId = 2865228021,	-- The SoundId for error notifications.
-			errorVolume = 0.1,			-- The Volume for error notifications.
-			errorPitch = 1,			-- The Pitch/PlaybackSpeed for error notifications.
-			alertSoundId = 3140355872,	-- The SoundId for alerts.
-			alertVolume = 0.5,			-- The Volume for alerts.
-			alertPitch = 1,			-- The Pitch/PlaybackSpeed for alerts.
 		},
 		
 		
 		---------------------------
 		["System"] = {
-			-- Gear
-			restrictedGear = {},
+			libraryIDs = { -- Gear, Sounds, Images, etc
+				denylist = {},
+				allowlist = {},
+			},
+			catalogIDs = { -- Accessories, Faces, etc
+				denylist = {},
+				allowlist = {},
+			},
+			bundleIDs = { -- Bundles
+				denylist = {},
+				allowlist = {},
+			},
+
+			-- Commands
+			preventRepeatCommands = true,
+			playerUndefinedSearch = main.enum.PlayerSearch.UserName, -- 'Undefined' means *without* the 'playerIdentifier' (e.g. ";kill Ben)
+			playerDefinedSearch = main.enum.PlayerSearch.DisplayName, -- 'Defined' means *with* the 'playerIdentifier' (e.g. ";kill @ForeverHD)
 			
 			-- Warning System
 			warnExpiryTime = 604800, -- 1 week
@@ -185,86 +192,6 @@ return {
 			globalBanTime = 172800, -- 2 days
 		}
 		
-		
-		---------------------------
-		-- These are old settings, new ones coming soon
-		--[[
-		
-		
-		["System"] = {
-			Colors = {							-- The colours for ChatColors and command arguments. | Format: {"ShortName", "FullName", Color3Value},
-				{"r", 		"Red",		 		Color3.fromRGB(255, 0, 0)		},
-				{"o", 		"Orange",	 		Color3.fromRGB(250, 100, 0)		},
-				{"y", 		"Yellow",			Color3.fromRGB(255, 255, 0)		},
-				{"g", 		"Green"	,			Color3.fromRGB(0, 255, 0)		},
-				{"dg", 		"DarkGreen"	, 		Color3.fromRGB(0, 125, 0)		},
-				{"b", 		"Blue",		 		Color3.fromRGB(0, 255, 255)		},
-				{"db", 		"DarkBlue",			Color3.fromRGB(0, 50, 255)		},
-				{"p", 		"Purple",	 		Color3.fromRGB(150, 0, 255)		},
-				{"pk",		"Pink",		 		Color3.fromRGB(255, 85, 185)	},
-				{"bk",		"Black",		 	Color3.fromRGB(0, 0, 0)			},
-				{"w",		"White",	 		Color3.fromRGB(255, 255, 255)	},
-			},
-			--
-			ThemeColors = {						-- The colours players can set their Nanoblox UI (in the 'Settings' menu). | Format: {ThemeName, ThemeColor3Value},
-				{"Red", 	Color3.fromRGB(150, 0, 0),		},
-				{"Orange", 	Color3.fromRGB(150, 75, 0),		},
-				{"Brown", 	Color3.fromRGB(120, 80, 30),	},
-				{"Yellow", 	Color3.fromRGB(130, 120, 0),	},
-				{"Green", 	Color3.fromRGB(0, 120, 0),		},
-				{"Blue", 	Color3.fromRGB(0, 100, 150),	},
-				{"Purple", 	Color3.fromRGB(100, 0, 150),	},
-				{"Pink",	Color3.fromRGB(150, 0, 100),	},
-				{"Black", 	Color3.fromRGB(60, 60, 60),		},
-			},
-			--
-			Cmdbar						= 1,			-- The minimum rank required to use the Cmdbar.
-			Cmdbar2						= 3,			-- The minimum rank required to use the Cmdbar2.
-			ViewBanland					= 3,			-- The minimum rank required to view the banland.
-			OnlyShowUsableCommands		= false,		-- Only display commands equal to or below the user's rank on the Commands page.
-			RankRequiredToViewPage		= {				-- || The pages on the main menu ||
-				["Commands"]		= 0,
-				["Admin"]			= 0,
-				["Settings"]		= 0,
-			},
-			RankRequiredToViewRank		= {				-- || The rank categories on the 'Ranks' subPage under Admin ||
-				["Owner"]			= 0,
-				["HeadAdmin"]		= 0,
-				["Admin"]			= 0,
-				["Mod"]				= 0,
-				["VIP"]				= 0,
-			},
-			RankRequiredToViewRankType	= {				-- || The collection of loader-rank-rewarders on the 'Ranks' subPage under Admin ||
-				["Owner"]			= 0,
-				["SpecificUsers"]	= 5,
-				["Gamepasses"] 		= 0,
-				["Assets"] 			= 0,
-				["Groups"] 			= 0,
-				["Friends"] 		= 0,
-				["FreeAdmin"] 		= 0,
-				["VipServerOwner"] 	= 0,
-			},
-			--
-			WelcomeRankNotice			= true,			-- The 'You're a [rankName]' notice that appears when you join the game. Set to false to disable.
-			WelcomeDonorNotice			= true,			-- The 'You're a Donor' notice that appears when you join the game. Set to false to disable.
-			WarnIncorrectPrefix			= true,			-- Warn the user if using the wrong prefix | "Invalid prefix! Try using [correctPrefix][commandName] instead!"
-			DisableAllNotices			= false,		-- Set to true to disable all Nanoblox notices.
-			--
-			ScaleLimit					= 4,			-- The maximum size players with a rank lower than 'IgnoreScaleLimit' can scale theirself. For example, players will be limited to ,size me 4 (if limit is 4) - any number above is blocked.
-			IgnoreScaleLimit			= 3,			-- Any ranks equal or above this value will ignore 'ScaleLimit'
-			--
-			VIPServerCommandBlacklist	= {"permRank", "permBan", "globalAnnouncement"},	-- Commands players are probihited from using in VIP Servers.
-			GearBlacklist				= {67798397},	-- The IDs of gear items to block when using the ,gear command.
-			IgnoreGearBlacklist			= 4,			-- The minimum rank required to ignore the gear blacklist.
-			--
-			PlayerDataStoreVersion		= "V1.0",		-- Data about the player (i.e. permRanks, custom settings, etc). Changing the Version name will reset all PlayerData.
-			SystemDataStoreVersion		= "V1.0",		-- Data about the game (i.e. the banland, universal message system, etc). Changing the Version name will reset all SystemData.
-			--
-			CoreNotices					= {				-- Modify core notices. You can find a table of all CoreNotices under [MainModule > Shared > Modules > CoreNotices]
-				--NoticeName = NoticeDetails,
-				
-			}
-		}--]]
 		
 		
 	},
