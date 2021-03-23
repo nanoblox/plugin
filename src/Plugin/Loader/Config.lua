@@ -144,7 +144,7 @@ return {
 	
 	Settings = {
 		---------------------------
-		["User"] = {
+		["Player"] = {
 			prefixes = {","},
 			argCapsule = "(%s)",
 			collective = ",",
